@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")/.."
+if [ -n "${PHP_BIN:-}" ]; then
+    runtime="$PHP_BIN"
+elif command -v php >/dev/null 2>&1; then
+    runtime="$(command -v php)"
+elif [ -x "$HOME/.local/share/onlidagger/bin/php" ]; then
+    runtime="$HOME/.local/share/onlidagger/bin/php"
+else
+    echo 'PHP 8.2+ is required. Install php-cli and php-sqlite3, or set PHP_BIN.' >&2
+    exit 1
+fi
+exec "$runtime" -S "127.0.0.1:${PORT:-8080}" -t public public/router.php

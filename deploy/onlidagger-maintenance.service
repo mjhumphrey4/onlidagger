@@ -1,0 +1,7 @@
+[Unit]
+Description=ONLIDagger command expiry and connectivity monitor
+[Service]
+Type=oneshot
+User=www-data
+WorkingDirectory=/var/www/onlidagger
+ExecStart=/usr/bin/php bin/maintenance.php

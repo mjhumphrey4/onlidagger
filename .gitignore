@@ -1,0 +1,9 @@
+/storage/*
+!/storage/.gitkeep
+.env
+*.log
+*.ex5
+.DS_Store
+
+__pycache__/
+*.pyc
