@@ -36,6 +36,12 @@ function strval_input(array $b,string $key,int $max=100): string {
     if(!is_string($v) || trim($v)==='' || strlen($v)>$max || preg_match('/[\x00-\x1F\x7F]/',$v)) fail('Invalid '.$key);
     return trim($v);
 }
+function optional_string(array $b,string $key,int $max=100,string $default=''): string {
+    $v=$b[$key]??$default;
+    if($v===null) return $default;
+    if(!is_string($v) || strlen($v)>$max || preg_match('/[\x00-\x1F\x7F]/',$v)) fail('Invalid '.$key);
+    return trim($v);
+}
 function number(array $b,string $key,float $min,float $max): float {
     $v=$b[$key]??null;
     if(!is_numeric($v) || !is_finite((float)$v) || (float)$v<$min || (float)$v>$max) fail("$key must be between $min and $max");

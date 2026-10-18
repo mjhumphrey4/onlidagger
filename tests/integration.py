@@ -98,6 +98,7 @@ def run():
         c.request('/api/ea/sync', heartbeat(login='wrong'), token=a['token'], expected=401)
         response = c.request('/api/ea/sync', heartbeat(), token=a['token'])
         assert 'BOT\t0\tstopped\tXAGUSD' in response
+        c.request('/api/ea/sync', dict(heartbeat(), bot_message=''), token=a['token'])
         c.request('/api/ea/sync', heartbeat(login='23456789', currency='EUR'), token=b['token'])
         payload = dict(request_key='test-placement-1', type='sell_limit', lots=.01, entry=35, sl=36, tp=34, ttl=60, accounts=[1,2])
         c.request('/api/orders', dict(payload, sl=34), expected=422)

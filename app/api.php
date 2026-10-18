@@ -51,7 +51,7 @@ if(str_starts_with($path,'/api/ea/')) {
         $v=integer($b,'bot_applied',0,2147483647);
         query('UPDATE accounts SET currency=?,balance=?,equity=?,floating=?,margin=?,last_seen=?,trade_allowed=?,mode=?,positions=?,bot_applied=?,bot_message=? WHERE id=?',[
             $currency,number($b,'balance',-1e12,1e12),number($b,'equity',-1e12,1e12),number($b,'floating',-1e12,1e12),number($b,'margin',0,1e12),time(),
-            integer($b,'trade_allowed',0,1),$mode,json_encode($clean),$v,strval_input($b,'bot_message',180),$id]);
+            integer($b,'trade_allowed',0,1),$mode,json_encode($clean),$v,optional_string($b,'bot_message',180,'Awaiting EA'),$id]);
         $commands=transaction(function()use($id){
             $cs=rows("SELECT * FROM commands WHERE account_id=? AND status IN ('queued','delivered','unknown','accepted','partially_filled') ORDER BY updated_at,id LIMIT 20",[$id]);
             foreach($cs as $c) if($c['status']==='queued') query("UPDATE commands SET status='delivered',updated_at=? WHERE id=?",[time(),$c['id']]);
@@ -71,7 +71,7 @@ if(str_starts_with($path,'/api/ea/')) {
         $cid=integer($b,'command_id',1,1000000000); $status=strval_input($b,'status',24);
         if(!in_array($status,['unknown','accepted','partially_filled','filled','cancelled','expired','rejected'],true)) fail('Invalid receipt status');
         $ticket=(string)($b['ticket']??''); if(!preg_match('/^\d{0,30}$/',$ticket)) fail('Invalid ticket');
-        $msg=strval_input($b,'message',180); $code=(string)($b['retcode']??''); if(!preg_match('/^\d{0,12}$/',$code)) fail('Invalid retcode');
+        $msg=optional_string($b,'message',180); $code=(string)($b['retcode']??''); if(!preg_match('/^\d{0,12}$/',$code)) fail('Invalid retcode');
         transaction(function()use($cid,$id,$status,$ticket,$msg,$code){
             $c=one('SELECT * FROM commands WHERE id=? AND account_id=?',[$cid,$id]); if(!$c) fail('Command not found',404);
             $terminal=['filled','cancelled','expired','rejected'];
