@@ -3,7 +3,7 @@ const {useEffect,useMemo,useState} = React;
 const h = React.createElement;
 const csrf = document.querySelector('meta[name="csrf-token"]').content;
 const views = {
-  overview:['Portfolio overview','A live command center for every MT5 terminal.'],
+  overview:['Command center','Trade the plan, not the noise. A live command center for every MT5 terminal.'],
   accounts:['Linked accounts','Pair terminals from MT5 without typing broker logins into the dashboard.'],
   copier:['Trade copier','Place pending orders once and let active terminals execute independently.'],
   journal:['Trade journal','Broker deals, costs and realized P/L imported by the EA.'],

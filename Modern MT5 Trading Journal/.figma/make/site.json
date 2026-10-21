@@ -1,0 +1,10 @@
+{
+  "description": "Streamline your trading experience with a modern MT5 Trading Journal and trade copier that executes trades across multiple linked accounts simultaneously.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
