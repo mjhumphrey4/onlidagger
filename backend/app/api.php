@@ -100,7 +100,9 @@ if(str_starts_with($path,'/api/ea/')) {
 }
 start_session();
 if($method!=='GET' && !hash_equals($_SESSION['csrf'],$_SERVER['HTTP_X_CSRF_TOKEN']??'')) fail('Refresh the page and try again (CSRF token missing)',403);
+$csrf=$_SESSION['csrf'];
 session_write_close();
+if($method==='GET' && $path==='/api/session') json_response(['csrf'=>$csrf]);
 if($method==='GET' && $path==='/api/state') {
     $accounts=rows('SELECT a.id,a.name,a.login,a.server,a.symbol,a.enabled,a.currency,a.balance,a.equity,a.floating,a.margin,a.last_seen,a.trade_allowed,a.mode,a.positions,a.bot_applied,a.bot_message,b.version,b.desired,b.config,b.run_id,b.started_at,b.expires_at FROM accounts a JOIN bots b ON b.account_id=a.id ORDER BY a.id');
     foreach($accounts as &$a){ $a['positions']=json_decode($a['positions'],true); $a['config']=json_decode($a['config'],true); $a['online']=$a['enabled'] && $a['last_seen'] && time()-(int)$a['last_seen']<15; }

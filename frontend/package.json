@@ -1,11 +1,14 @@
 {
-  "name": "figma-make-app",
+  "name": "modern-mt5-trading-journal",
   "private": true,
   "version": "1.0.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "format": "oxfmt"
   },

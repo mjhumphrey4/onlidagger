@@ -6,11 +6,13 @@ A central dashboard for linked MT5 accounts, an automatic trading journal, order
 
 ## Deployment
 
-Browser → HTTPS Nginx → PHP-FPM → SQLite on local disk.
+Browser → HTTPS Nginx → static `frontend/dist/` and `/api` → PHP-FPM → SQLite on local disk.
 
 Each running MT5 terminal → authenticated HTTPS → PHP API.
 
 Ubuntu hosts the dashboard. MT5 terminals run on suitable terminal hosts, each logged into the intended account with the EA running and algorithmic trading enabled. Linking an account does not start its terminal. No broker passwords are stored by the dashboard.
+
+Keep the Vite/React project under `frontend/` and PHP API, schema, terminal bridge, and operations scripts under `backend/`. `npm run build` writes only to `frontend/dist/`; PHP-FPM exposes API routes from `backend/public/` and does not render or bundle frontend files. In development, Vite proxies `/api` to the separate PHP server. In production, Nginx serves the build and forwards `/api` to PHP-FPM on the same origin.
 
 Use SQLite WAL, foreign keys, short transactions, a busy timeout, and consistent online backups. A single server is the initial target; measure contention before increasing account count. Use a CLI maintenance worker for command expiry, reconciliation alerts and retention.
 

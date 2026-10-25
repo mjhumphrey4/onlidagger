@@ -1,6 +1,8 @@
 # Implemented API
 
-All paths are relative to the dashboard origin. No CORS support. Browser mutations require the same-origin session cookie and `X-CSRF-Token` from the dashboard's `meta[name=csrf-token]`. Browser routes rely on private network access; they are intentionally not protected by a login.
+All paths are relative to the app origin. No CORS support. Browser mutations require the same-origin session cookie and `X-CSRF-Token`. Browser routes rely on private network access; they are intentionally not protected by a login.
+
+The standalone frontend starts a browser session with `GET /api/session`; the response contains the CSRF token. Send it as `X-CSRF-Token` on browser mutations. The PHP backend serves API routes only. Vite proxies `/api` to PHP during development, and production Nginx serves the built frontend while forwarding `/api` to PHP-FPM.
 
 Responses are JSON except successful `/api/ea/sync`, which uses a small tab-separated protocol so the EA needs no third-party JSON parser. Errors use `{"error":"message"}` with 4xx/5xx status. Requests are limited to 1 MiB.
 
@@ -8,6 +10,7 @@ Responses are JSON except successful `/api/ea/sync`, which uses a small tab-sepa
 
 | Method | Path | Purpose |
 |---|---|---|
+| GET | `/api/session` | Start browser session and return its CSRF token |
 | GET | `/api/state` | Accounts, currency-separated stats, daily/weekly/monthly period stats, daily chart, latest 100 commands, pairing status, bot metrics, audit |
 | GET | `/api/journal?page=1&account=1&search=XAG` | 50 deals per page; filters optional |
 | POST | `/api/accounts` | `name`/`label` and `symbol`; returns one-time `code` for MT5 pairing |

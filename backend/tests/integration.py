@@ -33,7 +33,7 @@ def server():
             try:
                 for _ in range(100):
                     try:
-                        urllib.request.urlopen(base, timeout=1).close(); break
+                        urllib.request.urlopen(base + '/api/session', timeout=1).close(); break
                     except (urllib.error.URLError, ConnectionError):
                         if process.poll() is not None:
                             log.seek(0); raise RuntimeError(log.read())
@@ -47,8 +47,8 @@ class Client:
     def __init__(self, base):
         self.base = base
         self.opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-        page = self.opener.open(base).read().decode()
-        self.csrf = re.search(r'name="csrf-token" content="([^"]+)"', page).group(1)
+        page = json.loads(self.opener.open(base + '/api/session').read().decode())
+        self.csrf = page['csrf']
 
     def request(self, path, data=None, token=None, expected=200, csrf=True):
         headers = {}

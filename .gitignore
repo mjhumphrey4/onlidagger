@@ -1,5 +1,8 @@
-/storage/*
-!/storage/.gitkeep
+/backend/storage/*
+!/backend/storage/.gitkeep
+/frontend/node_modules/
+/frontend/dist/
+/frontend/build/
 .env
 *.log
 *.ex5

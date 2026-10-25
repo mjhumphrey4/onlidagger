@@ -1,18 +1,30 @@
 # ONLIDagger MT5 Manager
 
-A Vanilla PHP + SQLite trading dashboard with a self-hosted React frontend and an MQL5 Expert Advisor. No login screen, Composer packages, external fonts, or fabricated trading data.
+A separated Vite/React frontend, PHP/SQLite API backend, and MQL5 Expert Advisor. The frontend is under `frontend/`; PHP and MT5 server logic are under `backend/`. No Composer packages or broker passwords are required.
 
-## Run the dashboard
+The previous PHP-rendered dashboard is retained in `legacy-dashboard/` as an archive; it is not part of the current deployment.
 
-Requires PHP 8.2+ with `pdo_sqlite`, `session`, and `filter` (standard Ubuntu PHP packages).
+## Run locally
+
+Requires Node 22.12+ for the frontend and PHP 8.2+ with `pdo_sqlite`, `session`, and `filter` for the backend.
 
 ```sh
-./bin/serve
+./backend/bin/serve
 ```
 
-Or run `php -S 127.0.0.1:8080 -t public public/router.php` directly. The launcher also finds the minimal PHP runtime installed for this workspace at `~/.local/share/onlidagger/bin/php`.
+In another terminal:
 
-Open **http://127.0.0.1:8080**. The application creates `storage/onlidagger.sqlite` automatically. Only `storage/` must be writable by PHP. Use `DB_PATH=/absolute/path/database.sqlite` to override the database location. Do not serve the repository root.
+```sh
+cd frontend
+npm install
+npm run dev
+```
+
+Open the Vite URL shown in the terminal (default **http://localhost:8443**). Vite proxies `/api` requests to the PHP service on port 8080. The backend creates `backend/storage/onlidagger.sqlite` automatically. Only `backend/storage/` must be writable by PHP. Set `DB_PATH=/absolute/path/database.sqlite` to override its location. Do not serve the repository root.
+
+## Build the frontend
+
+From `frontend/`, run `npm run build`. Vite writes a standalone production bundle to `frontend/dist/`; PHP sources and frontend build output remain separate. `npm run dev` is for frontend iteration and does not require a production build.
 
 On Ubuntu:
 
@@ -21,15 +33,13 @@ sudo apt update
 sudo apt install nginx php-fpm php-cli php-sqlite3
 ```
 
-Node is not required at runtime. If your destination server has npm and you want to refresh the pinned self-hosted React files, run `npm install` and `npm run vendor:react`.
-
 See [deployment](docs/DEPLOYMENT.md) for Nginx, TLS, permissions and backups.
 
 ## Connect MetaTrader 5
 
 1. Click **Link account**. Enter a friendly label and the broker's silver symbol if it differs from `XAGUSD`.
 2. Copy the one-time **PairCode**. It expires after 15 minutes and can be claimed once.
-3. Copy [ONLIDagger.mq5](mt5/ONLIDagger.mq5) into the terminal's `MQL5/Experts/` directory. Open it in MetaEditor and compile with F7.
+3. Copy [ONLIDagger.mq5](backend/mt5/ONLIDagger.mq5) into the terminal's `MQL5/Experts/` directory. Open it in MetaEditor and compile with F7.
 4. In MT5 → Tools → Options → Expert Advisors, allow WebRequest for your server origin. Use HTTPS for remote connections.
 5. Attach the EA to **one XAGUSD M1 chart per account/terminal**. Set `ServerURL` (origin only, no `/api`) and paste the dashboard code into `PairCode`. Leave `ApiToken` blank for new pairing. Enable Algo Trading and EA trading permissions.
 6. The EA sends the real MT5 login/server to the dashboard, receives a permanent account token, and stores it locally in `MQL5/Files`. Future launches can use the saved token or an explicit `ApiToken`. The account becomes online after the first heartbeat.
@@ -75,7 +85,7 @@ Default EA settings block real-account execution. Enable `AllowRealTrading` loca
 ## Verification
 
 ```sh
-python3 tests/integration.py
+python3 backend/tests/integration.py
 ```
 
 The test runner starts PHP with a temporary SQLite database and exercises real HTTP routes: CSRF, enrollment, account isolation, invalid orders, duplicate distribution, EA delivery/receipts, journal ingestion, currency separation, bot controls, revocation and stop behavior. Set `PHP_BIN` if PHP is not on PATH.

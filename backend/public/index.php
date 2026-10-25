@@ -8,8 +8,8 @@ header('Cache-Control: no-store');
 $path=parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH);
 try {
     if(str_starts_with($path,'/api/')) { require dirname(__DIR__).'/app/api.php'; exit; }
-    if($path!=='/') { http_response_code(404); echo 'Not found'; exit; }
-    start_session(); db(); require dirname(__DIR__).'/app/dashboard.php';
+    http_response_code(404); header('Content-Type: application/json');
+    echo json_encode(['error'=>'Not found']);
 } catch(Throwable $e) {
     error_log((string)$e); json_response(['error'=>'Server error. Check the application log.'],500);
 }
