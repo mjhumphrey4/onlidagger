@@ -16,7 +16,7 @@ In another terminal:
 
 ```sh
 cd frontend
-npm install
+npm install --include=dev
 npm run dev
 ```
 

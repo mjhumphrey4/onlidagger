@@ -6,7 +6,7 @@ The frontend and backend deploy independently. From the frontend project directo
 
 ```sh
 cd frontend
-npm ci
+npm ci --include=dev
 npm run build
 ```
 

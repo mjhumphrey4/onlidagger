@@ -502,3 +502,106 @@ h1 em { color: #707984; font-style: normal; font-weight: 500; }
   .fp-emotion-row > span { flex-basis: 100%; }
   .portfolio-card { grid-template-columns: 1fr 1fr; }
 }
+
+.empty-state, .loading-state {
+  padding: 24px;
+  color: #9ba3ad;
+  text-align: center;
+  font-size: 14px;
+}
+.loading-state { margin: 10vh auto; }
+.empty-visual { display: grid; place-items: center; color: #9ba3ad; text-align: center; }
+.api-error {
+  margin: 18px 32px 0;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(255, 112, 112, .32);
+  border-radius: 12px;
+  background: rgba(255, 80, 80, .08);
+  color: #ffb3b3;
+}
+.api-error span { flex: 1; }
+.fp-modal-backdrop { z-index: 1000; }
+.fp-modal { max-height: min(90vh, 800px); overflow-y: auto; }
+.fp-modal input, .fp-modal select, .fp-toolbar select, .ticket-grid input, .ticket-grid select {
+  min-width: 0;
+  color: inherit;
+  background: #11151a;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.fp-form-grid label, .ticket-grid label { display: grid; gap: 8px; }
+.fp-form-grid label > span, .ticket-grid label > span { color: #aab1bb; font-size: 12px; }
+.fp-modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+.pairing-result > p, .pairing-result li, .pairing-help p, .pairing-help li { color: #aab1bb; line-height: 1.65; }
+.pairing-result ol, .pairing-help ol { padding-left: 22px; }
+.pairing-result code, .pairing-help code { color: #d7ff6f; overflow-wrap: anywhere; }
+.ea-download { color: #d7ff6f; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.pairing-result > code {
+  display: block;
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px solid rgba(215,255,111,.28);
+  border-radius: 12px;
+  background: rgba(215,255,111,.06);
+  color: #d7ff6f;
+  text-align: center;
+  font: 700 28px/1.2 "DM Mono", monospace;
+  letter-spacing: .14em;
+}
+.pairing-symbol { font-size: 13px; }
+.form-error, .form-feedback { padding: 10px 12px; border-radius: 8px; color: #ffd0a1; background: rgba(255,175,87,.09); }
+.account-page-grid { align-items: start; }
+.account-page-card { min-width: 0; }
+.account-card-heading { display: flex; align-items: center; gap: 12px; }
+.account-card-heading > span:nth-child(2) { display: grid; gap: 4px; min-width: 0; flex: 1; }
+.account-card-heading small { color: #9ba3ad; overflow-wrap: anywhere; }
+.account-card-heading > i { font-size: 10px; font-style: normal; letter-spacing: .08em; }
+.account-online { color: #d7ff6f; }
+.account-offline { color: #9ba3ad; }
+.account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.account-actions .fp-action { flex: 1; }
+.danger-action { color: #ff9d9d !important; }
+.token-reveal { display: grid; gap: 8px; margin-top: 14px; padding: 12px; border: 1px solid rgba(215,255,111,.2); border-radius: 10px; }
+.token-reveal code { overflow-wrap: anywhere; color: #d7ff6f; }
+.token-reveal button { justify-self: start; color: #d7ff6f; background: transparent; border: 0; cursor: pointer; }
+.token-reveal small { color: #9ba3ad; }
+.accounts-empty, .performance-empty, .pairing-help { padding: 24px; }
+.accounts-empty { display: grid; justify-items: center; text-align: center; }
+.accounts-empty p { max-width: 540px; color: #9ba3ad; line-height: 1.6; }
+.empty-account-icon { color: #d7ff6f; }
+.pairing-help { margin-top: 20px; }
+.pairing-help ol { display: grid; gap: 7px; }
+.pairing-help > p { border-top: 1px solid rgba(255,255,255,.08); padding-top: 14px; }
+.currency-summary, .chart-data-list { display: grid; gap: 8px; }
+.currency-row, .chart-data-list > div { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.currency-row b { text-align: right; }
+.account-mini-row { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+.account-mini-row > span:nth-child(2) { display: grid; gap: 4px; min-width: 0; flex: 1; }
+.account-mini-row small { color: #9ba3ad; overflow-wrap: anywhere; }
+.account-mini-row b { font-size: 11px; color: #aab1bb; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.status-dot.online { background: #d7ff6f; box-shadow: 0 0 10px rgba(215,255,111,.5); }
+.status-dot.offline { background: #777f88; }
+.currency-performance { display: grid; gap: 18px; }
+.currency-performance-card .performance-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(125px, 1fr)); gap: 10px; }
+.currency-performance-card .performance-strip > div { display: grid; gap: 8px; padding: 12px; }
+.currency-performance-card .performance-strip span { color: #9ba3ad; font-size: 10px; }
+.journal-table-panel { min-width: 0; }
+.journal-row > span { min-width: 0; overflow-wrap: anywhere; }
+.journal-toolbar select { max-width: 180px; }
+.fp-toolbar select { color: #aab1bb; }
+.place-order { width: 100%; justify-content: center; }
+.execution-note { display: flex; align-items: flex-start; gap: 8px; color: #9ba3ad; font-size: 12px; line-height: 1.5; }
+.execution-note .fp-icon { flex: 0 0 18px; }
+.activity-row { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .api-error { margin: 14px 16px 0; align-items: flex-start; flex-wrap: wrap; }
+  .api-error span { flex-basis: 100%; order: 3; }
+  .currency-row { grid-template-columns: 1fr 1fr; }
+  .currency-row b { grid-column: 1 / -1; text-align: left; }
+  .account-actions .fp-action { flex-basis: 100%; }
+}
