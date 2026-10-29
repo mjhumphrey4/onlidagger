@@ -50,6 +50,7 @@ export type Deal = {
   magic: string
   time: number
   comment: string
+  note: string
 }
 
 export type Command = {
@@ -122,6 +123,8 @@ export const api = {
     if (params.search) query.set("search", params.search)
     return request<{ deals: Deal[]; total: number; page: number }>(`/api/journal?${query}`)
   },
+  saveJournalNote: (account: number, ticket: string, note: string) =>
+    request<{ ok: boolean; note: string }>(`/api/journal/${account}/${ticket}/note`, { method: "POST", body: JSON.stringify({ note }) }),
   createPairing: (name: string, symbol: string) =>
     request<{ id: number; code: string; expires_at: number; symbol: string }>("/api/accounts", {
       method: "POST",

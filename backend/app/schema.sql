@@ -35,6 +35,10 @@ CREATE TABLE IF NOT EXISTS deals (
  PRIMARY KEY(account_id,ticket)
 );
 CREATE INDEX IF NOT EXISTS deals_time ON deals(time);
+CREATE TABLE IF NOT EXISTS journal_notes (
+ account_id INTEGER NOT NULL, ticket TEXT NOT NULL, note TEXT NOT NULL DEFAULT '', updated_at INTEGER NOT NULL,
+ PRIMARY KEY(account_id,ticket), FOREIGN KEY(account_id,ticket) REFERENCES deals(account_id,ticket) ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS bots (
  account_id INTEGER PRIMARY KEY REFERENCES accounts(id), version INTEGER NOT NULL DEFAULT 0,
  desired TEXT NOT NULL DEFAULT 'stopped', config TEXT NOT NULL DEFAULT '{}', run_id TEXT NOT NULL DEFAULT '',

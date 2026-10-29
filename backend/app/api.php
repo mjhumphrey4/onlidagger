@@ -124,8 +124,17 @@ if($method==='GET' && $path==='/api/journal') {
     if(!empty($_GET['account'])) {$filter.=' AND d.account_id=?'; $args[]=(int)$_GET['account'];}
     if(!empty($_GET['search'])) {$filter.=' AND (d.symbol LIKE ? OR d.ticket LIKE ?)'; $s='%'.substr((string)$_GET['search'],0,40).'%'; $args[]=$s;$args[]=$s;}
     $count=one("SELECT COUNT(*) total FROM deals d WHERE $filter",$args)['total'];
-    $data=rows("SELECT d.*,a.name account,a.currency FROM deals d JOIN accounts a ON a.id=d.account_id WHERE $filter ORDER BY d.time DESC,d.ticket DESC LIMIT 50 OFFSET ".(($page-1)*50),$args);
+    $data=rows("SELECT d.*,a.name account,a.currency,COALESCE(n.note,'') note FROM deals d JOIN accounts a ON a.id=d.account_id LEFT JOIN journal_notes n ON n.account_id=d.account_id AND n.ticket=d.ticket WHERE $filter ORDER BY d.time DESC,d.ticket DESC LIMIT 50 OFFSET ".(($page-1)*50),$args);
     json_response(['deals'=>$data,'total'=>$count,'page'=>$page]);
+}
+if($method==='POST' && preg_match('#^/api/journal/(\d+)/(\d+)/note$#',$path,$m)) {
+    $b=body(); $note=$b['note']??null;
+    if(!is_string($note)||strlen($note)>4000) fail('Journal note must be text up to 4000 characters');
+    $account=(int)$m[1]; $ticket=$m[2];
+    if(!one('SELECT 1 FROM deals WHERE account_id=? AND ticket=?',[$account,$ticket])) fail('Deal not found',404);
+    if(trim($note)==='') query('DELETE FROM journal_notes WHERE account_id=? AND ticket=?',[$account,$ticket]);
+    else query('INSERT INTO journal_notes(account_id,ticket,note,updated_at) VALUES(?,?,?,?) ON CONFLICT(account_id,ticket) DO UPDATE SET note=excluded.note,updated_at=excluded.updated_at',[$account,$ticket,trim($note),time()]);
+    json_response(['ok'=>true,'note'=>trim($note)]);
 }
 if($method==='POST' && $path==='/api/accounts') {
     $b=body();
